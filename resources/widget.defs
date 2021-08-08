@@ -1,0 +1,15 @@
+<svg>
+  <defs>
+    <!-- Default imports -->
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="import" href="/mnt/sysassets/system_widget.defs" />
+
+    <!-- Button imports -->
+    <link rel="import" href="/mnt/sysassets/widgets/text_button.defs" />
+    <link rel="import" href="/mnt/sysassets/widgets/icon_button.defs" />
+
+    <symbol id="custom-textarea" type="dynamic-textarea" system-events="all">
+      <textarea id="text" fill="white" x="0" y="0" width="100%" font-size="25" />
+    </symbol>
+  </defs>
+</svg>

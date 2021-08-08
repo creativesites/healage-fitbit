@@ -1,0 +1,45 @@
+<svg>
+  <svg id="clockFaceScreen">
+    <text id="timeDisplay"/>
+
+    <!-- Battery UI Component-->
+    <svg>
+      <text id="batteryDisplay" />
+      <rect id="batteryBodyBorder" />
+      <rect id="batteryBodyInner" />
+      <rect id="batteryLevel" />
+    </svg>
+
+    <!-- Date UI Component -->
+    <svg>
+      <text id="monthDisplay" />
+      <text id="dayOfMonthDisplay" />
+    </svg>
+
+
+    <!-- Clockface buttons -->
+    <svg>
+      <use id="refreshButton" href="#icon-button" class="medium-button" x="100%-90" y="15"/>
+      <use id="userButton" href="#icon-button" class="medium-button" x="100%-90" y="100%-90"/>
+    </svg>
+  </svg>
+
+  <!-- Non-clockface buttons -->
+  <use id="backButton" href="#icon-button" class="medium-button" x="10" y="10"/>
+
+  <svg id="userScreen">
+    <text class="title">User Info</text>
+    <text id="patientIdHeader">Patient ID:</text>
+    <text id="patientIdDisplay">ID unverified</text>
+  </svg>
+
+  <svg id="notificationScreen">
+    <use id="notificationDisplay" href="#custom-textarea" x="25" y="50" width="100%-50">
+      <!-- 144 characters max, ipsum text is required to reserve the char space-->
+      <set href="text" attributeName="text-buffer" to="Lorem ipsum dolor sit amet, cum te cibo appareat. No per paulo hendrerit similique, vim et prima appareat, ea elitr delectus deterruisset quo. i"/>
+    </use>
+    <use id="button-1" href="#text-button" class="text-button bottom left" />
+    <use id="button-2" href="#text-button" class="text-button bottom right" />
+  </svg>
+
+</svg>

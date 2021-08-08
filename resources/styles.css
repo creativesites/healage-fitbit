@@ -1,0 +1,167 @@
+.defaultText {
+  font-size: 32;
+  font-family: System-Regular;
+  font-weight: regular;
+  text-length: 32;
+  fill: white;
+}
+
+.background-fill { 
+  fill: fb-black; 
+}
+
+.title {
+  font-size: 32;
+  font-family: System-Regular;
+  font-weight: bold;
+  text-length: 32;
+  text-anchor: middle;
+  fill: orange;
+  x: 50%;
+  y: 58;
+}
+
+#patientIdHeader {
+  font-family: System-Regular;
+  font-weight: regular;
+  text-anchor: middle;
+  font-size: 40;
+  fill: white;
+  x: 50%;
+  y: 50%-40;
+}
+
+#patientIdDisplay {
+  font-family: System-Bold;
+  font-weight: bold;
+  text-anchor: middle;
+  font-size: 50;
+  fill: white;
+  x: 50%;
+  y: 50%+20;
+}
+
+#background {
+  width: 100%;
+  height: 100%;
+  fill: black;
+}
+
+#timeDisplay {
+  font-size: 80;
+  font-family: System-Bold;
+  text-length: 32;
+  text-anchor: middle;
+  x: 50%;
+  y: 50%+40;
+  fill: white;
+}
+
+#batteryDisplay {
+  font-size: 24;
+  font-family: System-Bold;
+  text-length: 4;
+  x: 75;
+  y: 50;
+  fill: white;
+}
+
+#batteryBodyBorder {
+  x: 40;
+  y: 35;
+  width: 30;
+  height: 15;
+  fill: white;
+}
+
+#batteryBodyInner {
+  x: 41;
+  y: 36;
+  width: 28;
+  height: 13;
+  fill: black;
+}
+
+#batteryLevel {
+  x: 42;
+  y: 37;
+  width: 0;
+  height: 11;
+  fill: white;
+}
+
+#monthDisplay {
+  font-size: 30;
+  font-family: System-Bold;
+  x: 50%-25;
+  y: 50;
+  fill: white;
+}
+
+#dayOfMonthDisplay {
+  font-size: 30;
+  font-family: System-Bold;
+  x: 50%+30;
+  y: 50;
+  fill: white;
+}
+
+/* Buttons */
+#refreshButton #image {
+  href: "refresh.png";
+  width: 60;
+  height: 60;
+}
+
+#prescriptionButton #image {
+  href: "pill-bottle.png";
+  width: 60;
+  height: 60;
+  fill: white;
+}
+
+#userButton #image{
+  href: "user.png";
+  width: 60;
+  height: 60;
+  fill: white;
+}
+
+#backButton #image {
+  href: "back.png";
+  width: 48;
+  height: 48;
+  fill: white;
+}
+
+.prescriptionBackground {
+  fill: orange;
+}
+
+#notificationDisplay {
+  font-size: 32;
+  font-family: System-Regular;
+  font-weight: bold;
+  text-length: 200;
+  x: 50%;
+  y: 58;
+  fill: white;
+}
+
+#button-1 {
+  fill: green;
+}
+
+#button-1 #text {
+  text-buffer: "DONE";
+  fill: white;
+}
+
+#button-2  {
+  fill: red;
+}
+
+#button-2 #text {
+  text-buffer: "LATER";
+  fill:white;
+}
