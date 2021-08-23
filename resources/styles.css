@@ -66,6 +66,16 @@
   fill: white;
 }
 
+#gaitSpeedMeasurementDisplay {
+  font-size: 80;
+  font-family: System-Bold;
+  text-length: 32;
+  text-anchor: middle;
+  x: 50%;
+  y: 50%+20;
+  fill: white;
+}
+
 #batteryBodyBorder {
   x: 40;
   y: 35;
@@ -113,17 +123,38 @@
   height: 60;
 }
 
-#prescriptionButton #image {
-  href: "pill-bottle.png";
+#userButton #image{
+  href: "user.png";
   width: 60;
   height: 60;
   fill: white;
 }
 
-#userButton #image{
-  href: "user.png";
-  width: 60;
-  height: 60;
+#timerButton #image{
+  href: "timer.png";
+  width: 50;
+  height: 50;
+  fill: white;
+}
+
+#startButton #image{
+  href: "start.png";
+  width: 70;
+  height: 70;
+  fill: white;
+}
+
+#stopButton #image{
+  href: "stop.png";
+  width: 70;
+  height: 70;
+  fill: white;
+}
+
+#restartButton #image{
+  href: "restart.png";
+  width: 70;
+  height: 70;
   fill: white;
 }
 

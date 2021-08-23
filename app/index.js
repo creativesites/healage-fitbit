@@ -20,6 +20,8 @@ const dayOfMonthDisplay = document.getElementById('dayOfMonthDisplay');
 const monthDisplay = document.getElementById('monthDisplay');
 const timeDisplay = document.getElementById('timeDisplay');
 
+const gaitSpeedMeasurementDisplay = document.getElementById('gaitSpeedMeasurementDisplay');
+
 const patientIdDisplay = document.getElementById('patientIdDisplay');
 const notificationDisplay = document.getElementById('notificationDisplay');
 
@@ -55,23 +57,64 @@ me.onunload = () => {
 const backButton = document.getElementById('backButton');
 const refreshButton = document.getElementById('refreshButton');
 const userButton = document.getElementById('userButton');
+const timerButton = document.getElementById('timerButton');
+const restartButton = document.getElementById('restartButton');
+const startButton = document.getElementById('startButton');
+const stopButton = document.getElementById('stopButton');
 const doneButton = document.getElementById('button-1');
 const deferButton = document.getElementById('button-2');
 
+let started = false; // tracks if the timer has started
+let isMeasurementDisplayed = false; // tracks if a measurement is displayed
+let startTime;
+let endTime;
+let timeElapsed;
 
 backButton.addEventListener('click', (evt) => {
-  if (currentScreen === 'user') {
+  if (currentScreen === 'user' || currentScreen === 'timer') {
     showClockFaceScreen();
   }
+  isMeasurementDisplayed = false;
 })
 
 refreshButton.addEventListener('click', (evt) => {
-  let patientId = readPatientId(userFileName);
+  const patientId = readPatientId(userFileName);
   sendCheckPrescriptions(patientId);
 })
 
 userButton.addEventListener('click', (evt) => {
   showUserScreen();
+})
+
+timerButton.addEventListener('click', (evt) => {
+  showTimerScreen();
+})
+
+restartButton.addEventListener('click', (evt) => {
+  if (isMeasurementDisplayed === true) {
+    gaitSpeedMeasurementDisplay.text = '0.0 m/s';
+    isMeasurementDisplayed = false;
+  }
+  restartButton.style.display = 'none';
+  startButton.style.display = 'inline';
+})
+
+startButton.addEventListener('click', (evt) => {
+  startTime = new Date().getTime();
+  startButton.style.display = 'none';
+  stopButton.style.display = 'inline';
+})
+
+stopButton.addEventListener('click', (evt) => {
+  endTime = new Date().getTime();
+  timeElapsed = endTime - startTime;
+  const gaitSpeed = Math.round((4 / (timeElapsed / 1000)) * 10) / 10;
+  gaitSpeedMeasurementDisplay.text = `${gaitSpeed} m/s`;
+  const patientId = readPatientId(userFileName);
+  sendGaitSpeed(patientId, gaitSpeed);
+  isMeasurementDisplayed = true;
+  stopButton.style.display = 'none';
+  restartButton.style.display = 'inline';
 })
 
 doneButton.addEventListener('click', (evt) => {
@@ -103,11 +146,13 @@ deferButton.addEventListener('click', (evt) => {
 let screens = [];
 const clockFaceScreen = document.getElementById('clockFaceScreen');
 const userScreen = document.getElementById('userScreen');
+const timerScreen = document.getElementById('timerScreen');
 const notificationScreen = document.getElementById('notificationScreen');
 
 screens.push(clockFaceScreen);
 screens.push(userScreen);
 screens.push(notificationScreen);
+screens.push(timerScreen);
 
 let currentScreen = 'clockface';
 showClockFaceScreen();
@@ -229,6 +274,17 @@ function sendCheckId(patientId) {
   }
 }
 
+function sendGaitSpeed(patientId, gaitSpeed) {
+  const data = {
+    request: 'postGaitSpeed',
+    id: patientId,
+    gaitSpeed: gaitSpeed,
+  }
+  if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+    messaging.peerSocket.send(data);
+  }
+}
+
 function sendStatus(patientId, prescriptionId, reminderDate, status) {
   const reminderStatusFileName = 'reminderStatus' + new Date().getTime() + '.cbor';
   const reminderStatusData = {
@@ -275,6 +331,17 @@ function showUserScreen() {
   updateButtons();
 }
 
+function showTimerScreen() {
+  hideScreens();
+  timerScreen.style.display = 'inline';
+  gaitSpeedMeasurementDisplay.text = '0.0 m/s';
+  startButton.style.display = 'inline';
+  stopButton.style.display = 'none';
+  restartButton.style.display = 'none';
+  currentScreen = 'timer';
+  updateButtons();
+}
+
 function showClockFaceScreen() {
   hideScreens();
   stopVibration();
@@ -290,7 +357,7 @@ function hideScreens() {
 function updateButtons() {
   if (currentScreen === 'clockface' || currentScreen === 'notification') {
     backButton.style.display = 'none';
-  } else if (currentScreen === 'user') {
+  } else if (currentScreen === 'user' || currentScreen === 'timer') {
     backButton.style.display = 'inline';
   }
 }

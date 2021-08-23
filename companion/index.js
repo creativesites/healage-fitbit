@@ -1,15 +1,15 @@
-import { me } from "companion";
-import * as messaging from "messaging";
-import * as util from "../common/utils";
+import { me } from 'companion';
+import * as messaging from 'messaging';
+import * as util from '../common/utils';
 import { inbox } from 'file-transfer';
-import { outbox } from "file-transfer";
+import { outbox } from 'file-transfer';
 import * as cbor from 'cbor';
 
 /**
  * Uses Fitbit Messaging API to determine if a generated ID is available for use
  */
-messaging.peerSocket.addEventListener("message", (evt) => {
-  if (evt.data.request === "checkId") {
+messaging.peerSocket.addEventListener('message', (evt) => {
+  if (evt.data.request === 'checkId') {
     const patientId = evt.data.id;
     isIdAvailable(patientId).then(data => {
       if (data.message === 'true') {
@@ -18,6 +18,12 @@ messaging.peerSocket.addEventListener("message", (evt) => {
         sendRegenerateId();
       }
     });
+  } else if (evt.data.request === 'postGaitSpeed') {
+    const data = {
+      id: evt.data.id,
+      gaitSpeed: evt.data.gaitSpeed,
+    }
+    sendPostToServer(data, 'gait-speed');
   }
 });
 

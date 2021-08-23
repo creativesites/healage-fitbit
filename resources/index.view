@@ -21,12 +21,14 @@
     <svg>
       <use id="refreshButton" href="#icon-button" class="medium-button" x="100%-90" y="15"/>
       <use id="userButton" href="#icon-button" class="medium-button" x="100%-90" y="100%-90"/>
+      <use id="timerButton" href="#icon-button" class="medium-button" x="40" y="100%-90"/>
     </svg>
   </svg>
 
   <!-- Non-clockface buttons -->
   <use id="backButton" href="#icon-button" class="medium-button" x="10" y="10"/>
 
+  <!-- Screens -->
   <svg id="userScreen">
     <text class="title">User Info</text>
     <text id="patientIdHeader">Patient ID:</text>
@@ -42,4 +44,10 @@
     <use id="button-2" href="#text-button" class="text-button bottom right" />
   </svg>
 
+  <svg id="timerScreen">
+      <text id ="gaitSpeedMeasurementDisplay"/>
+      <use id="restartButton" href="#icon-button" class="medium-button" x="20%" y="100%-90"/>
+      <use id="startButton" href="#icon-button" class="medium-button" x="60%" y="100%-90"/>
+      <use id="stopButton" href="#icon-button" class="medium-button" x="60%" y="100%-90"/>
+  </svg>
 </svg>
