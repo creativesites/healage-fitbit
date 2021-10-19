@@ -67,7 +67,7 @@
 }
 
 #gaitSpeedMeasurementDisplay {
-  font-size: 80;
+  font-size: 24;
   font-family: System-Bold;
   text-length: 32;
   text-anchor: middle;
@@ -123,42 +123,42 @@
   height: 60;
 }
 
-#userButton #image{
+#userScreenButton #image {
   href: "user.png";
   width: 60;
   height: 60;
   fill: white;
 }
 
-#timerButton #image{
+#timerScreenButton #image {
   href: "timer.png";
   width: 50;
   height: 50;
   fill: white;
 }
 
-#startButton #image{
+#timerButton #image {
   href: "start.png";
   width: 70;
   height: 70;
   fill: white;
 }
 
-#stopButton #image{
+#stopButton #image {
   href: "stop.png";
   width: 70;
   height: 70;
   fill: white;
 }
 
-#restartButton #image{
+#restartButton #image {
   href: "restart.png";
   width: 70;
   height: 70;
   fill: white;
 }
 
-#backButton #image {
+.back-button #image {
   href: "back.png";
   width: 48;
   height: 48;
@@ -179,20 +179,20 @@
   fill: white;
 }
 
-#button-1 {
+#doneButton {
   fill: green;
 }
 
-#button-1 #text {
+#doneButton #text {
   text-buffer: "DONE";
   fill: white;
 }
 
-#button-2  {
+#deferButton  {
   fill: red;
 }
 
-#button-2 #text {
+#deferButton #text {
   text-buffer: "LATER";
   fill:white;
 }
