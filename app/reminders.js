@@ -31,7 +31,7 @@ export const createSingleReminder = (prescription, time) => {
     deferInterval: prescription.deferInterval,
     deferCount: 0,
   };
-}
+};
 
 /**
  * Creates reminders for 1 day i.e. today based off a prescription object
@@ -49,7 +49,7 @@ export const createReminders = (prescription) => {
     const reminder = createSingleReminder(prescription, time);
     if (!reminder) return;
     reminders.push(reminder);
-  }
+  };
 
   // If the reminder is before the start date or after the end date, do not create reminders
   if ((prescription.endDate && currentDate.getTime() > endDate.getTime())
@@ -84,7 +84,7 @@ export const createReminders = (prescription) => {
   }
 
   return reminders;
-}
+};
 
 /**
  * Generates reminders based off the list of prescriptions received from the server for a specific patient
@@ -104,7 +104,7 @@ export const generate = () => {
   });
   reminders.sort(datetime.sortByDate);
   fs.writeFileSync(REMINDERS_FILENAME, reminders, 'cbor');
-}
+};
 
 /**
  * Checks if two reminders are the same

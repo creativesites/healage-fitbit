@@ -22,4 +22,4 @@ export const readCbor = (file) => (
 export const deleteFile = (file) => {
   if (!fs.existsSync(file)) return;
   fs.unlinkSync(file);
-}
+};

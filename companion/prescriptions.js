@@ -10,4 +10,4 @@ export const getAll = async (patientId) => {
     throw new Error(`An error has occurred: ${response.status}`);
   }
   return response.json();
-}
+};

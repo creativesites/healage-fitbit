@@ -1,6 +1,6 @@
 <svg>
   <svg id="clockFaceScreen">
-    <text id="timeDisplay"/>
+    <text id="timeDisplay" />
 
     <svg>
       <text id="batteryDisplay" />
@@ -24,9 +24,9 @@
       <text x="50%" y="35%" font-size="24" fill="white" text-anchor="middle">Prescriptions updated!</text>
     </svg>
 
-    <use id="refreshButton" href="#icon-button" class="medium-button" x="100%-90" y="10"/>
-    <use id="timerScreenButton" href="#icon-button" class="medium-button" x="10" y="100%-90"/>
-    <use id="userScreenButton" href="#icon-button" class="medium-button" x="100%-90" y="100%-90"/>
+    <use id="refreshButton" href="#icon-button" class="medium-button" x="100%-90" y="10" />
+    <use id="timerScreenButton" href="#icon-button" class="medium-button" x="10" y="100%-90" />
+    <use id="userScreenButton" href="#icon-button" class="medium-button" x="100%-90" y="100%-90" />
   </svg>
 
   <svg id="userScreen" display="none">
@@ -39,7 +39,8 @@
   <svg id="notificationScreen" display="none">
     <use id="notificationDisplay" href="#custom-textarea" x="25" y="50" width="100%-50">
       <!-- 144 characters max, ipsum text is required to reserve the char space-->
-      <set href="text" attributeName="text-buffer" to="Lorem ipsum dolor sit amet, cum te cibo appareat. No per paulo hendrerit similique, vim et prima appareat, ea elitr delectus deterruisset quo. i"/>
+      <set href="text" attributeName="text-buffer"
+        to="Lorem ipsum dolor sit amet, cum te cibo appareat. No per paulo hendrerit similique, vim et prima appareat, ea elitr delectus deterruisset quo. i" />
     </use>
     <use id="doneButton" href="#text-button" class="text-button bottom left" />
     <use id="deferButton" href="#text-button" class="text-button bottom right" />
@@ -47,9 +48,9 @@
 
   <svg id="timerScreen" display="none">
     <use class="medium-button back-button" href="#icon-button" x="10" y="10" />
-    <text id ="gaitSpeedMeasurementDisplay">
+    <text id="gaitSpeedMeasurementDisplay">
       Press play and walk 4 meters
     </text>
-    <use id="timerButton" href="#icon-button" class="medium-button" x="60%" y="100%-90"/>
+    <use id="timerButton" href="#icon-button" class="medium-button" x="60%" y="100%-90" />
   </svg>
 </svg>

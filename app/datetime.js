@@ -135,4 +135,4 @@ export const isSameDate = (dateString) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   return date.getTime() === today.getTime();
-}
+};

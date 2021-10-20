@@ -8,7 +8,7 @@ export const patientId = async () => {
   outbox.enqueue(PATIENT_ID_FILENAME, cbor.encode({
     patientId: await patientsService.generatePatientId(),
   }));
-}
+};
 
 /**
  * @param {string} patientId 
@@ -19,7 +19,7 @@ export const prescriptions = async (patientId) => {
     patientId,
     prescriptions: allPrescriptions,
   }));
-}
+};
 
 /**
  * Sends a file transfer to the Fitbit device with the file

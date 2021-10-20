@@ -21,4 +21,4 @@ export const generatePatientId = () => {
 export const readPatientId = () => {
   const patient = readCbor(PATIENT_ID_FILENAME);
   return Object.keys(patient).length !== 0 && patient.patientId.length === 8 ? patient.patientId : null;
-}
+};

@@ -51,7 +51,7 @@ const processAllFiles = () => {
       deleteFile(request.filename);
     }
   }
-}
+};
 inbox.addEventListener('newfile', processAllFiles);
 processAllFiles();
 
@@ -227,4 +227,4 @@ setInterval(() => {
 }, POKE_INTERVAL);
 
 // Every 24 hours, send the day history
-setInterval(send.dayHistory, 24 * 60 * 60 * 1000)
+setInterval(send.dayHistory, 24 * 60 * 60 * 1000);
