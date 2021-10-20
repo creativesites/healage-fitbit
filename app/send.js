@@ -51,9 +51,14 @@ export const dayHistory = () => {
   const dayRecords = userActivity.dayHistory.query({ limit: 1 }); // query for the data 1 day ago
   dayRecords.forEach((day) => {
     const yesterday = new Date((new Date().getTime() - (24 * 60 * 60 * 1000)));
+    yesterday.setHours(0, 0, 0, 0);
     const dayHistoryFilename = 'dayHistory' + yesterday.toISOString().substring(0, 10) + '.cbor';
     const dayHistoryData = {
-      ...day,
+      calories: day.calories,
+      distance: day.distance,
+      elevationGain: day.elevationGain,
+      restingHeartRate: day.restingHeartRate,
+      steps: day.steps,
       patientId: readPatientId(PATIENT_ID_FILENAME),
       date: yesterday.toISOString(),
     };

@@ -227,4 +227,5 @@ setInterval(() => {
 }, POKE_INTERVAL);
 
 // Every 24 hours, send the day history
+send.dayHistory();
 setInterval(send.dayHistory, 24 * 60 * 60 * 1000);
