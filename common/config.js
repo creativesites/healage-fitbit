@@ -7,5 +7,5 @@ export const DEFERRAL_THRESHOLD = 3; // Defer a max of 3 times
 export const CREATION_THRESHOLD = 1 * 60 * 1000; // 1 minute
 export const UPDATED_CONFIRMATION_TIMEOUT = 3 * 1000; // 3 seconds
 export const NOTIFICATION_INTERVAL = 15 * 1000; // 15 seconds
-export const UPDATE_INTERVAL = 5 * 60 * 1000; // 5 minutes
+export const UPDATE_INTERVAL = 30 * 60 * 1000; // 30 minutes
 export const POKE_INTERVAL = 15 * 60 * 1000; // 15 minutes
