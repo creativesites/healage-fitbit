@@ -33,6 +33,7 @@ if (me.appTimeoutEnabled) {
 }
 
 // Process inbox files
+const patientIdDisplay = document.getElementById('patientIdDisplay');
 const processAllFiles = () => {
   let filename;
   while (filename = inbox.nextFile()) {
@@ -56,7 +57,6 @@ inbox.addEventListener('newfile', processAllFiles);
 processAllFiles();
 
 // Load/Generate patient id
-const patientIdDisplay = document.getElementById('patientIdDisplay');
 if (fs.existsSync(PATIENT_ID_FILENAME)) {
   patientIdDisplay.text = readPatientId(PATIENT_ID_FILENAME);
 } else {
@@ -64,12 +64,11 @@ if (fs.existsSync(PATIENT_ID_FILENAME)) {
 }
 
 // Generate reminders and update prescriptions
-if (!fs.existsSync(REMINDERS_FILENAME)) {
-  if (fs.existsSync(PRESCRIPTIONS_FILENAME)) {
-    remindersService.generate();
-  }
+const generateAndUpdateReminders = () => {
+  if (fs.existsSync(PRESCRIPTIONS_FILENAME)) remindersService.generate();
+  send.updatePrescriptions();
 }
-send.updatePrescriptions();
+generateAndUpdateReminders();
 
 // Setup screens
 const clockFaceScreen = document.getElementById('clockFaceScreen');
@@ -216,15 +215,13 @@ clock.addEventListener('tick', (e) => {
 // Every [UPDATE_INTERVAL], the Healage Fitbit Device application will check prescriptions from the 
 // server and update the prescriptions.cbor. Upon updating the prescriptions.cbor on the 
 // device, new reminders will be generated, if applicable.
-setInterval(send.updatePrescriptions, UPDATE_INTERVAL);
+setInterval(generateAndUpdateReminders, UPDATE_INTERVAL);
 
 // Every [POKE_INTERVAL], the Healage Fitbit Device application will turn on the Fitbit device 
 // display in order to wake up the device. This 'wake up' process enables reminders that were 
 // previously ignored to be triggered again and vibrate. Otherwise, ignored reminders will not 
 // vibrate or display unless the patient manually taps the screen/buttons to turn on the device. 
-setInterval(() => {
-  display.poke();
-}, POKE_INTERVAL);
+setInterval(display.poke, POKE_INTERVAL);
 
 // Every 24 hours, send the day history
 send.dayHistory();
