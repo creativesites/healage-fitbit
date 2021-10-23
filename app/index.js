@@ -135,6 +135,7 @@ setInterval(() => {
     const reminderDate = new Date(currentReminder.reminderDate);
     const currentDate = new Date();
     if (currentDate.getTime() - reminderDate.getTime() > DELETION_THRESHOLD) {
+      vibration.stop();
       send.status(currentReminder.prescriptionId, currentReminder.reminderDate, 'missed');
       reminders.splice(0, 1);
       fs.writeFileSync(REMINDERS_FILENAME, reminders, 'cbor');
@@ -161,7 +162,7 @@ document.getElementById('doneButton').addEventListener('click', () => {
   vibration.stop();
   const reminders = readCborArray(REMINDERS_FILENAME);
   const currentReminder = reminders.shift();
-  send.status(currentReminder.id, currentReminder.reminderDate, 'completed');
+  send.status(currentReminder.prescriptionId, currentReminder.reminderDate, 'completed');
   fs.writeFileSync(REMINDERS_FILENAME, reminders, 'cbor');
   showScreen(clockFaceScreen);
   notificationShowing = false;
@@ -175,7 +176,7 @@ document.getElementById('deferButton').addEventListener('click', () => {
   futureDate.setMinutes(futureDate.getMinutes() + currentReminder.deferInterval);
   currentReminder.deferCount += 1;
   if (currentReminder.deferCount > DEFERRAL_THRESHOLD) {
-    send.status(currentReminder.id, currentReminder.reminderDate, 'missed');
+    send.status(currentReminder.prescriptionId, currentReminder.reminderDate, 'missed');
     reminders.splice(0, 1);
   } else {
     currentReminder.reminderDate = futureDate.toISOString();

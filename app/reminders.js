@@ -22,7 +22,7 @@ export const createSingleReminder = (prescription, time) => {
     return null;
   }
   return {
-    id: prescription.id,
+    prescriptionId: prescription.id,
     medicationName: prescription.medicationName,
     dose: prescription.dose,
     unit: prescription.unit,
@@ -113,7 +113,7 @@ export const generate = () => {
  * @returns {boolean} True if the reminders are the same, otherwise false
  */
 export const isSameReminder = (a, b) => (
-  ['id', 'medicationName', 'unit', 'route', 'deferInterval'].every((key) => (
+  ['prescriptionId', 'medicationName', 'unit', 'route', 'deferInterval'].every((key) => (
     a[key] === b[key]
   ))
 );
