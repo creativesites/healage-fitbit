@@ -18,9 +18,10 @@ export const createSingleReminder = (prescription, time) => {
   const reminderDate = new Date();
   const { hour, min } = datetime.getHourAndMin(time);
   reminderDate.setHours(hour, min, 0, 0);
-  if (currentDate.getTime() - reminderDate.getTime() > CREATION_THRESHOLD) {
+
+  if (currentDate.getTime() > reminderDate.getTime())
     return null;
-  }
+
   return {
     prescriptionId: prescription.id,
     medicationName: prescription.medicationName,
@@ -94,7 +95,10 @@ export const generate = () => {
     datetime.lessThanEqualCurrentTime(reminder.reminderDate)
     || reminder.deferCount > 0
   ));
+
   const { prescriptions } = readCbor(PRESCRIPTIONS_FILENAME);
+  if (!prescriptions) return;
+
   prescriptions.forEach((prescription) => {
     const createdReminders = createReminders(prescription);
     reminders = reminders.filter((reminder) => (
