@@ -80,7 +80,6 @@ const showScreen = (screen) => {
   screens.forEach((screen) => screen.style.display = 'none');
   screen.style.display = 'inline';
 };
-showScreen(clockFaceScreen);
 
 // Back buttons
 document.getElementsByClassName('back-button').forEach((button) => {
@@ -93,33 +92,51 @@ document.getElementById('timerScreenButton').addEventListener('click', () => sho
 document.getElementById('userScreenButton').addEventListener('click', () => showScreen(userScreen));
 
 // Timer screen buttons
-const gaitSpeedMeasurementDisplay = document.getElementById('gaitSpeedMeasurementDisplay');
-const timerButton = document.getElementById('timerButton');
 let startTime;
 let state = 'stopped';
+const timerButton = document.getElementById('timerButton');
+const gaitSpeedMeasurementDisplay = document.getElementById('gaitSpeedMeasurementDisplay');
+
+const updateTimerState = (newState, image, text) => {
+  state = newState;
+  timerButton.image = image;
+  gaitSpeedMeasurementDisplay.text = text;
+}
+
 timerButton.addEventListener('click', () => {
-  if (state === 'stopped') {
-    state = 'started';
-    timerButton.image = 'stop.png';
-    startTime = new Date().getTime();
-    gaitSpeedMeasurementDisplay.text = 'Press stop when done';
-  } else if (state === 'started') {
-    state = 'completed';
-    timerButton.image = 'restart.png';
-    const timeElapsed = new Date().getTime() - startTime;
-    const gaitSpeed = Math.round((4 / (timeElapsed / 1000)) * 10) / 10;
-    gaitSpeedMeasurementDisplay.text = `Gait Speed: ${gaitSpeed} m/s`;
-    send.gaitSpeed(gaitSpeed);
-  } else if (state === 'completed') {
-    state = 'stopped';
-    timerButton.image = 'start.png';
-    gaitSpeedMeasurementDisplay.text = 'Press play and walk 4 meters';
+  switch (state) {
+    case 'stopped':
+      updateTimerState('started', 'stop.png', 'Press stop when done');
+      startTime = new Date().getTime();
+      break;
+    case 'started':
+      const timeElapsed = new Date().getTime() - startTime;
+      const gaitSpeed = Math.round((4 / (timeElapsed / 1000)) * 10) / 10;
+      updateTimerState('completed', 'restart.png', `Gait Speed: ${gaitSpeed} m/s`);
+      send.gaitSpeed(gaitSpeed);
+      break;
+    case 'completed':
+      updateTimerState('stopped', 'start.png', 'Press play and walk 4 meters');
+      break;
   }
 });
 
 // Notification screen
-const notificationDisplay = document.getElementById('notificationDisplay');
 let notificationShowing = false;
+const notificationDisplay = document.getElementById('notificationDisplay');
+
+const showNotification = () => {
+  display.poke();
+  vibration.start();
+  showScreen(notificationScreen);
+  notificationShowing = true;
+};
+
+const hideNotification = () => {
+  vibration.stop();
+  showScreen(clockFaceScreen);
+  notificationShowing = false;
+};
 
 // Every [NOTIFICATION_INTERVAL], the Healage Fitbit Device application will delete any completed reminders
 // and check if the current reminder is equal or past the current time. If so, it will display
@@ -131,60 +148,52 @@ setInterval(() => {
 
   // Delete showing reminder if passed 2 hours
   if (notificationShowing) {
-    const currentReminder = reminders[0];
     const reminderDate = new Date(currentReminder.reminderDate);
     const currentDate = new Date();
     if (currentDate.getTime() - reminderDate.getTime() > DELETION_THRESHOLD) {
-      vibration.stop();
       send.status(currentReminder.prescriptionId, currentReminder.reminderDate, 'missed');
       reminders.splice(0, 1);
       fs.writeFileSync(REMINDERS_FILENAME, reminders, 'cbor');
-      showScreen(clockFaceScreen);
-      notificationShowing = false;
+      hideNotification();
     }
     return;
   };
 
   // Check if the current reminder should be shown
   if (datetime.lessThanEqualCurrentTime(currentReminder.reminderDate)) {
-    display.poke();
-    vibration.start();
     const dateParts = new Date(currentReminder.reminderDate).toLocaleString().split(' ');
     const time = dateParts[4];
     const convertedTime = `${datetime.convertTo12hClock(time)} on ${dateParts[0]} ${dateParts[1]} ${dateParts[2]}`;
-    notificationDisplay.text = `Take ${currentReminder.dose} ${currentReminder.unit} of ${currentReminder.medicationName} by ${currentReminder.route} at ${convertedTime}`;
-    showScreen(notificationScreen);
-    notificationShowing = true;
+    const { dose, unit, medicationName } = currentReminder;
+    const optionalRoute = currentReminder.route ? `by ${currentReminder.route} ` : '';
+    notificationDisplay.text = `Take ${dose} ${unit} of ${medicationName} ${optionalRoute}at ${convertedTime}`;
+    showNotification();
   }
 }, NOTIFICATION_INTERVAL);
 
 document.getElementById('doneButton').addEventListener('click', () => {
-  vibration.stop();
   const reminders = readCborArray(REMINDERS_FILENAME);
   const currentReminder = reminders.shift();
   send.status(currentReminder.prescriptionId, currentReminder.reminderDate, 'completed');
   fs.writeFileSync(REMINDERS_FILENAME, reminders, 'cbor');
-  showScreen(clockFaceScreen);
-  notificationShowing = false;
+  hideNotification();
 });
 
 document.getElementById('deferButton').addEventListener('click', () => {
-  vibration.stop();
   const reminders = readCborArray(REMINDERS_FILENAME);
   const currentReminder = reminders[0];
-  const futureDate = new Date();
-  futureDate.setMinutes(futureDate.getMinutes() + currentReminder.deferInterval);
   currentReminder.deferCount += 1;
   if (currentReminder.deferCount > DEFERRAL_THRESHOLD) {
     send.status(currentReminder.prescriptionId, currentReminder.reminderDate, 'missed');
     reminders.splice(0, 1);
   } else {
+    const futureDate = new Date();
+    futureDate.setMinutes(futureDate.getMinutes() + currentReminder.deferInterval);
     currentReminder.reminderDate = futureDate.toISOString();
     reminders.sort(datetime.sortByDate);
   }
   fs.writeFileSync(REMINDERS_FILENAME, reminders, 'cbor');
-  showScreen(clockFaceScreen);
-  notificationShowing = false;
+  hideNotification();
 });
 
 // Every tick, update clock face
@@ -218,11 +227,13 @@ clock.addEventListener('tick', (e) => {
 // device, new reminders will be generated, if applicable.
 setInterval(generateAndUpdateReminders, UPDATE_INTERVAL);
 
-// Every [POKE_INTERVAL], the Healage Fitbit Device application will turn on the Fitbit device 
-// display in order to wake up the device. This 'wake up' process enables reminders that were 
-// previously ignored to be triggered again and vibrate. Otherwise, ignored reminders will not 
-// vibrate or display unless the patient manually taps the screen/buttons to turn on the device. 
-setInterval(display.poke, POKE_INTERVAL);
+// Every [POKE_INTERVAL], the Healage Fitbit Device application will show a notification if the
+// screen has fallen asleep.
+setInterval(() => {
+  if (!notificationShowing) return;
+  display.poke();
+  vibration.start();
+}, POKE_INTERVAL);
 
 // Every 24 hours, send the day history
 send.dayHistory();
