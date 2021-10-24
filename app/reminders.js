@@ -56,32 +56,38 @@ export const createReminders = (prescription) => {
   if ((prescription.endDate && currentDate.getTime() > endDate.getTime())
     || (currentDate.getTime() < startDate.getTime())) return [];
 
-  if (frequency === 'daily') {
-    occurrences[0].times.forEach(addReminder);
-  } else if (frequency === 'weekly') {
-    occurrences.forEach((occurrence) => {
-      if (datetime.isSameDay(occurrence.day)) {
-        occurrence.times.forEach(addReminder);
-      }
-    });
-  } if (frequency === 'biweekly') {
-    occurrences.forEach((occurrence) => {
-      if (datetime.isSameDay(occurrence.day) && datetime.getDayDifferenceFromToday(occurrence.starting) % 14 === 0) {
-        occurrence.times.forEach(addReminder);
-      }
-    });
-  } else if (frequency === 'monthly') {
-    occurrences.forEach((occurrence) => {
-      if (datetime.isSameDay(occurrence.day) && datetime.getDayDifferenceFromToday(occurrence.starting) % 28 === 0) {
-        occurrence.times.forEach(addReminder);
-      }
-    });
-  } else if (frequency === 'custom') {
-    occurrences.forEach((occurrence) => {
-      if (datetime.isSameDate(occurrence.day)) {
-        occurrence.times.forEach(addReminder);
-      }
-    });
+  switch (frequency) {
+    case 'daily':
+      occurrences[0].times.forEach(addReminder);
+      break;
+    case 'weekly':
+      occurrences.forEach((occurrence) => {
+        if (datetime.isSameDay(occurrence.day)) {
+          occurrence.times.forEach(addReminder);
+        }
+      });
+      break;
+    case 'biweekly':
+      occurrences.forEach((occurrence) => {
+        if (datetime.isSameDay(occurrence.day) && datetime.getDayDifferenceFromToday(occurrence.starting) % 14 === 0) {
+          occurrence.times.forEach(addReminder);
+        }
+      });
+      break;
+    case 'monthly':
+      occurrences.forEach((occurrence) => {
+        if (datetime.isSameDay(occurrence.day) && datetime.getDayDifferenceFromToday(occurrence.starting) % 28 === 0) {
+          occurrence.times.forEach(addReminder);
+        }
+      });
+      break;
+    case 'custom':
+      occurrences.forEach((occurrence) => {
+        if (datetime.isSameDate(occurrence.day)) {
+          occurrence.times.forEach(addReminder);
+        }
+      });
+      break;
   }
 
   return reminders;
