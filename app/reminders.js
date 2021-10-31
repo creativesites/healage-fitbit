@@ -105,25 +105,7 @@ export const generate = () => {
   const { prescriptions } = readCbor(PRESCRIPTIONS_FILENAME);
   if (!prescriptions) return;
 
-  prescriptions.forEach((prescription) => {
-    const createdReminders = createReminders(prescription);
-    reminders = reminders.filter((reminder) => (
-      createdReminders.every((newReminder) => !isSameReminder(newReminder, reminder))
-    ));
-    reminders.push(...createdReminders);
-  });
+  prescriptions.forEach((prescription) => reminders.push(...createReminders(prescription)));
   reminders.sort(datetime.sortByDate);
   fs.writeFileSync(REMINDERS_FILENAME, reminders, 'cbor');
 };
-
-/**
- * Checks if two reminders are the same
- * @param {Object} a 
- * @param {Object} b
- * @returns {boolean} True if the reminders are the same, otherwise false
- */
-export const isSameReminder = (a, b) => (
-  ['prescriptionId', 'medicationName', 'unit', 'route', 'deferInterval'].every((key) => (
-    a[key] === b[key]
-  ))
-);
