@@ -10,10 +10,9 @@
     "io-ts": "^2.2.10"
   },
   "fitbit": {
-    "appUUID": "ab3c1583-ad65-4ffd-bba5-a0e78e3b6190",
+    "appUUID": "ed71600b-574d-4800-bea5-c2df381ebbef",
     "appType": "clockface",
     "appDisplayName": "Healage",
-    "iconFile": "resources/icon.png",
     "wipeColor": "#ffffff",
     "requestedPermissions": [
       "access_internet",
