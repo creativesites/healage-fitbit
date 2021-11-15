@@ -49,6 +49,7 @@ const processAllFiles = () => {
       }, UPDATED_CONFIRMATION_TIMEOUT);
     } else if (filename.indexOf('deleteFile') !== -1) {
       const request = readCbor(filename);
+      deleteFile(filename);
       deleteFile(request.filename);
     }
   }
